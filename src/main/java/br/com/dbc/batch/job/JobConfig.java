@@ -1,6 +1,5 @@
-package br.com.dbc.job;
+package br.com.dbc.batch.job;
 
-import br.com.dbc.listener.ListenerConfig;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -14,15 +13,14 @@ import org.springframework.context.annotation.Configuration;
 @EnableBatchProcessing
 public class JobConfig {
     @Autowired
-    JobBuilderFactory jobBuilderFactory;
+    private JobBuilderFactory jobBuilderFactory;
 
     @Bean
-    public Job job(ListenerConfig listenerConfig, Step step){
+    public Job job(Step step){
         return jobBuilderFactory
                 .get("job")
                 .start(step)
                 .incrementer(new RunIdIncrementer())
-                .listener(listenerConfig)
                 .build();
     }
 }
