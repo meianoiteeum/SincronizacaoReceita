@@ -1,8 +1,10 @@
 package br.com.dbc.batch.reader;
 
 import br.com.dbc.model.Receita;
+import br.com.dbc.model.ReceitaDTO;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,17 +14,18 @@ import org.springframework.core.io.Resource;
 @Configuration
 public class ReaderConfig {
 
-    @StepScope
     @Bean
-    public FlatFileItemReader<Receita> reader(@Value("#{jobParameters['arquivoReceita']}") Resource resource){
-        return new FlatFileItemReaderBuilder<Receita>()
+    @StepScope
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public FlatFileItemReader reader(@Value("#{jobParameters['arquivoReceita']}") Resource resource){
+        return new FlatFileItemReaderBuilder()
                 .name("reader")
                 .encoding("utf-8")
                 .resource(resource)
                 .delimited()
                 .delimiter(";")
                 .names(new String[]{"agencia","conta","saldo","status"})
-                .targetType(Receita.class)
+                .targetType(ReceitaDTO.class)
                 .build();
     }
 }

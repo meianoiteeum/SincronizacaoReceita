@@ -1,10 +1,10 @@
 package br.com.dbc.batch.step;
 
-import br.com.dbc.model.Receita;
+import br.com.dbc.batch.reader.CustomReader;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +15,12 @@ public class StepConfig {
     public StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Step step(ItemReader<Receita> reader,
-                     ItemWriter<Receita> writer){
+    public Step step(FlatFileItemReader reader,
+                     ItemWriter writer){
         return stepBuilderFactory
                 .get("step")
-                .<Receita,Receita> chunk(1)
-                .reader(reader)
+                .chunk(1)
+                .reader(new CustomReader(reader))
                 .writer(writer)
                 .build();
     }

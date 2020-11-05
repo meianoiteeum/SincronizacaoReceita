@@ -1,17 +1,17 @@
 package br.com.dbc.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Receita {
-    private Integer agencia;
+    private String agencia;
     private String conta;
     private Double saldo;
-    private Character status;
+    private String status;
 
     @Override
     public String toString() {
