@@ -2,6 +2,8 @@ package br.com.dbc.batch.reader;
 
 import br.com.dbc.model.Receita;
 import br.com.dbc.model.ReceitaDTO;
+import br.com.dbc.service.ReceitaService;
+import br.com.dbc.service.impl.ReceitaServiceImpl;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.ItemStreamReader;

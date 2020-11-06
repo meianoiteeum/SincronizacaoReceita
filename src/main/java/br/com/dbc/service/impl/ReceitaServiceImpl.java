@@ -1,4 +1,6 @@
-package br.com.dbc;
+package br.com.dbc.service.impl;
+
+import br.com.dbc.service.ReceitaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +8,11 @@ import java.util.List;
 /**
  * @author gabriel_stabel<gabriel_stabel@sicredi.com.br>
  */
-public class ReceitaService {
+public class ReceitaServiceImpl implements ReceitaService {
 
 	// Esta é a implementação interna do "servico" do banco central. Veja o código fonte abaixo para ver os formatos esperados pelo Banco Central neste cenário.
 
+    @Override
     public boolean atualizarConta(String agencia, String conta, double saldo, String status)
             throws RuntimeException, InterruptedException {
 		

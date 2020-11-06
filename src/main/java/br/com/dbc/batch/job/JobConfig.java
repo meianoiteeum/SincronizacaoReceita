@@ -20,7 +20,6 @@ public class JobConfig {
         return jobBuilderFactory
                 .get("job")
                 .start(step)
-                .incrementer(new RunIdIncrementer())
                 .build();
     }
 }
