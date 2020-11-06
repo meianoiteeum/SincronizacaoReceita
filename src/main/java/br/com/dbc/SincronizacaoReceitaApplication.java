@@ -1,5 +1,7 @@
 package br.com.dbc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,6 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SincronizacaoReceitaApplication {
 
 	public static void main(String[] args) {
+		if(args.length == 0)
+			throw new IllegalArgumentException("Parâmetro da leitura de arquivo não foi encontrado");
+
 		System.exit(SpringApplication.exit(SpringApplication.run(SincronizacaoReceitaApplication.class, args)));
 	}
 

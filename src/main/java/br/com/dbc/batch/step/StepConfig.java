@@ -1,11 +1,9 @@
 package br.com.dbc.batch.step;
 
 import br.com.dbc.batch.reader.CustomReader;
-import br.com.dbc.model.Receita;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ public class StepConfig {
     public StepBuilderFactory stepBuilderFactory;
 
     @Bean
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public Step step(FlatFileItemReader reader,
                      ItemProcessor processor,
                      FlatFileItemWriter writer){
