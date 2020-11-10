@@ -20,6 +20,7 @@ public class ReaderConfig {
                 .name("reader")
                 .encoding("utf-8")
                 .resource(resource)
+                .linesToSkip(1)
                 .delimited()
                 .delimiter(";")
                 .names("agencia","conta","saldo","status")

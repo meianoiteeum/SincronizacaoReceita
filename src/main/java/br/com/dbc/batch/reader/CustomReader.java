@@ -26,7 +26,7 @@ public class CustomReader implements ItemStreamReader<Receita> {
         if(dto != null) {
              receita = Receita.builder()
                     .agencia(dto.getAgencia())
-                    .conta(dto.getConta())
+                    .conta(dto.getConta().replace("-",""))
                     .saldo(Double.parseDouble(dto.getSaldo().replace(",", ".")))
                     .status(dto.getStatus())
                     .build();
