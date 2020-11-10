@@ -7,9 +7,9 @@
  
 ## Projeto
  Projeto standalone para leitura de um arquivo CSV no formato (0101;12225-6;100,00;A) e envio a Receita Federal utilizando um serviço genérico.
+ 
 
-### Build
- * Para criar o jar na pasta target do projeto.
+### Gerar Build
  * Entre na pasta do projeto e execute o comando:
 ```sh
 mvn package
