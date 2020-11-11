@@ -7,7 +7,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Receita {
     private String agencia;
     private String conta;

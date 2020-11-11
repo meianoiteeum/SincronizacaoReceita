@@ -3,7 +3,6 @@ package br.com.dbc.batch.processor;
 import br.com.dbc.model.Receita;
 import br.com.dbc.service.ReceitaService;
 import br.com.dbc.service.impl.ReceitaServiceImpl;
-import lombok.SneakyThrows;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.validator.ValidatingItemProcessor;
 import org.springframework.batch.item.validator.ValidationException;
