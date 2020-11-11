@@ -1,8 +1,11 @@
 package br.com.dbc.batch.processor;
 
+import br.com.dbc.batch.step.StepConfig;
 import br.com.dbc.model.Receita;
 import br.com.dbc.service.ReceitaService;
 import br.com.dbc.service.impl.ReceitaServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.validator.ValidatingItemProcessor;
 import org.springframework.batch.item.validator.ValidationException;
@@ -14,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 public class ProcessorConfig {
 
     private ReceitaService receitaService = new ReceitaServiceImpl();
+
+    private Logger logger = LoggerFactory.getLogger(ProcessorConfig.class);
 
     @Bean
     public ItemProcessor<Receita, Receita> processor() {
@@ -28,9 +33,11 @@ public class ProcessorConfig {
             @Override
             public void validate(Receita receita) throws ValidationException {
                 try {
+                    logger.info("Enviando a conta " + receita.getConta() + " para a receita");
                     Boolean atualizacao = receitaService.atualizarConta(receita.getAgencia(), receita.getConta(), receita.getSaldo(), receita.getStatus());
                     receita.setAtualizacao(atualizacao);
                 }catch (RuntimeException | InterruptedException runtimeException){
+                    logger.error("Error Exception: " + runtimeException.getMessage());
                     throw new ValidationException(runtimeException.getMessage());
                 }
             }

@@ -26,6 +26,9 @@ public class StepConfig {
                 .reader(new CustomReader(reader))
                 .processor(processor)
                 .writer(writer)
+                .faultTolerant()
+                .skip(Exception.class)
+                .skipLimit(Integer.MAX_VALUE)
                 .build();
     }
 }
