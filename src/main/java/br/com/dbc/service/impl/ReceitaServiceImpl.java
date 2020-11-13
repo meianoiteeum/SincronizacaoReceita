@@ -1,6 +1,7 @@
 package br.com.dbc.service.impl;
 
 import br.com.dbc.service.ReceitaService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * @author gabriel_stabel<gabriel_stabel@sicredi.com.br>
  */
+@Service
 public class ReceitaServiceImpl implements ReceitaService {
 
 	// Esta é a implementação interna do "servico" do banco central. Veja o código fonte abaixo para ver os formatos esperados pelo Banco Central neste cenário.

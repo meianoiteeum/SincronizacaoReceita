@@ -1,24 +1,28 @@
 package br.com.dbc.batch.processor;
 
-import br.com.dbc.batch.step.StepConfig;
 import br.com.dbc.model.Receita;
 import br.com.dbc.service.ReceitaService;
-import br.com.dbc.service.impl.ReceitaServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.validator.ValidatingItemProcessor;
 import org.springframework.batch.item.validator.ValidationException;
 import org.springframework.batch.item.validator.Validator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ProcessorConfig {
 
-    private ReceitaService receitaService = new ReceitaServiceImpl();
+    @Autowired
+    private ReceitaService receitaService;
 
     private Logger logger = LoggerFactory.getLogger(ProcessorConfig.class);
+
+    public ProcessorConfig(ReceitaService receitaService) {
+        this.receitaService = receitaService;
+    }
 
     @Bean
     public ItemProcessor<Receita, Receita> processor() {
@@ -29,17 +33,14 @@ public class ProcessorConfig {
     }
 
     private Validator<? super Receita> validator() {
-        return new Validator<Receita>() {
-            @Override
-            public void validate(Receita receita) throws ValidationException {
-                try {
-                    logger.info("Enviando a conta " + receita.getConta() + " para a receita");
-                    Boolean atualizacao = receitaService.atualizarConta(receita.getAgencia(), receita.getConta(), receita.getSaldo(), receita.getStatus());
-                    receita.setAtualizacao(atualizacao);
-                }catch (RuntimeException | InterruptedException runtimeException){
-                    logger.error("Error Exception: " + runtimeException.getMessage());
-                    throw new ValidationException(runtimeException.getMessage());
-                }
+        return (Validator<Receita>) receita -> {
+            try {
+                logger.info("Enviando a conta " + receita.getConta() + " para a receita");
+                Boolean atualizacao = receitaService.atualizarConta(receita.getAgencia(), receita.getConta(), receita.getSaldo(), receita.getStatus());
+                receita.setAtualizacao(atualizacao);
+            }catch (RuntimeException | InterruptedException runtimeException){
+                logger.error("Error Exception: " + runtimeException.getMessage());
+                throw new ValidationException(runtimeException.getMessage());
             }
         };
     }

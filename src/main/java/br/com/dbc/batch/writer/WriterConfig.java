@@ -14,25 +14,28 @@ import org.springframework.core.io.Resource;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
 
 @Configuration
 public class WriterConfig {
 
-    private String extensao = ".csv";
-    private String horaAtual = String.valueOf(System.currentTimeMillis());
-    private String AGENCIA = "agencia";
-    private String CONTA = "conta";
-    private String SALDO = "saldo";
-    private String STATUS = "status";
-    private String ATUALIZACAO = "atualizacao";
+    private static final String EXTENSION = ".csv";
+    private static final String SEMICOLON = ";";
+    private static final String DOT = ".";
+    private static final String COMMA = ",";
+    private static final String HYPHEN = "-";
+    private static final String AGENCIA = "agencia";
+    private static final String CONTA = "conta";
+    private static final String SALDO = "saldo";
+    private static final String STATUS = "status";
+    private static final String ATUALIZACAO = "atualizacao";
 
     @Bean
     @StepScope
     public FlatFileItemWriter<Receita> writer(@Value("#{jobParameters['input-file']}") Resource resource) throws IOException {
         File file = resource.getFile();
         String path = file.getAbsolutePath();
-        File novo = new File(path.replace(extensao, horaAtual).concat(".csv"));
+        String horaAtual = String.valueOf(System.currentTimeMillis());
+        File novo = new File(path.replace(EXTENSION, horaAtual).concat(EXTENSION));
 
         return new FlatFileItemWriterBuilder<Receita>()
                 .encoding("utf-8")
@@ -41,45 +44,42 @@ public class WriterConfig {
                 .lineAggregator(lineAggregator())
                 .headerCallback(header())
                 .delimited()
-                .delimiter(";")
+                .delimiter(SEMICOLON)
                 .names(AGENCIA,CONTA,SALDO,STATUS,ATUALIZACAO)
                 .build();
     }
 
     private FlatFileHeaderCallback header() {
-        return new FlatFileHeaderCallback() {
-            @Override
-            public void writeHeader(Writer writer) throws IOException {
-                writer.append(AGENCIA).append(";");
-                writer.append(CONTA).append(";");
-                writer.append(SALDO).append(";");
-                writer.append(STATUS).append(";");
-                writer.append(ATUALIZACAO);
-            }
+        return writer -> {
+            writer.append(AGENCIA).append(SEMICOLON);
+            writer.append(CONTA).append(SEMICOLON);
+            writer.append(SALDO).append(SEMICOLON);
+            writer.append(STATUS).append(SEMICOLON);
+            writer.append(ATUALIZACAO);
         };
     }
 
     private LineAggregator<Receita> lineAggregator() {
-        return new LineAggregator<Receita>() {
+        return new LineAggregator<>() {
             @Override
             public String aggregate(Receita receita) {
                 StringBuilder builder = new StringBuilder();
-                builder.append(receita.getAgencia()).append(";");
-                builder.append(convertConta(receita.getConta())).append(";");
-                builder.append(convertSaldo(receita.getSaldo())).append(";");
-                builder.append(receita.getStatus()).append(";");
+                builder.append(receita.getAgencia()).append(SEMICOLON);
+                builder.append(convertConta(receita.getConta())).append(SEMICOLON);
+                builder.append(convertSaldo(receita.getSaldo())).append(SEMICOLON);
+                builder.append(receita.getStatus()).append(SEMICOLON);
                 builder.append(receita.getAtualizacao());
                 return builder.toString();
             }
 
             private String convertSaldo(Double saldo) {
-                return saldo.toString().replace(".",",");
+                return saldo.toString().replace(DOT, COMMA);
             }
 
             private String convertConta(String conta) {
                 int lenght = conta.length();
                 String digito = conta.substring(lenght - 1);
-                String numero = conta.substring(0,lenght - 1).concat("-").concat(digito);
+                String numero = conta.substring(0, lenght - 1).concat(HYPHEN).concat(digito);
                 return numero;
             }
         };

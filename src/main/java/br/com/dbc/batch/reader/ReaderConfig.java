@@ -12,6 +12,11 @@ import org.springframework.core.io.Resource;
 @Configuration
 public class ReaderConfig {
 
+    private static final String AGENCIA = "agencia";
+    private static final String CONTA = "conta";
+    private static final String SALDO = "saldo";
+    private static final String STATUS = "status";
+
     @Bean
     @StepScope
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -23,7 +28,7 @@ public class ReaderConfig {
                 .linesToSkip(1)
                 .delimited()
                 .delimiter(";")
-                .names("agencia","conta","saldo","status")
+                .names(AGENCIA,CONTA,SALDO,STATUS)
                 .targetType(ReceitaDTO.class)
                 .build();
     }
